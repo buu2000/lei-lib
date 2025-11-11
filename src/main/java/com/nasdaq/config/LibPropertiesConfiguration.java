@@ -7,4 +7,5 @@ import org.springframework.context.annotation.PropertySources;
 @PropertySources({@PropertySource(value ="classpath:library.yaml", factory = YamlPropertySourceFactory.class)})
 public class LibPropertiesConfiguration
 {
+  
 }
