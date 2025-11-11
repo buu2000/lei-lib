@@ -1,0 +1,77 @@
+image: maven:3.9.11-eclipse-temurin-25
+
+cache:
+  key: '$CI_COMMIT_REF_NAME'
+  paths:
+    - .maven/
+
+stages:
+  - build
+  - test
+  - publish
+  - image_analyze
+  - deploy
+
+
+before_script:
+  - export NG_CLI_ANALYTICS="false"
+  - export MAVEN_USER_HOME=`pwd`/.maven
+  - export PATH=$JAVA_HOME/bin:$PATH
+  - export MAVEN_CONFIG=""
+
+
+checkstyle:
+  stage: build
+  script:
+    - mvn  checkstyle:check -Dmaven.repo.local=$MAVEN_USER_HOME
+
+compile:
+  stage: build
+  script:
+    - mvn -ntp compile -P-webapp -Dmaven.repo.local=$MAVEN_USER_HOME
+  artifacts:
+    paths:
+      - target/classes/
+      - target/generated-sources/
+    expire_in: 1 day
+
+sonar:
+  stage: build
+  script:
+    - mvn -ntp org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.organization=Sets -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME
+  allow_failure: true
+
+sbom:
+  stage: build
+  script:
+    - mvn -ntp org.cyclonedx:cyclonedx-maven-plugin:2.9.1:makeAggregateBom -Dmaven.repo.local=$MAVEN_REPO_LOCAL
+  artifacts:
+    paths:
+      - target/bom.json
+
+test:
+  stage: test
+  script:
+    - mvn -ntp verify -P-webapp -Dmaven.repo.local=$MAVEN_USER_HOME -e
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+        - target/failsafe-reports/TEST-*.xml
+    paths:
+      - target/surefire-reports
+      - target/failsafe-reports
+      - target/site
+    expire_in: 1 day
+
+package:
+  stage: publish
+  script:
+    - mvn -ntp verify -Pprod -DskipTests -Dmaven.repo.local=$MAVEN_USER_HOME
+  artifacts:
+    paths:
+      - target/*.jar
+      - target/classes
+    expire_in: 1 day
+
+ 
