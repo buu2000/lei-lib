@@ -10,11 +10,11 @@ Build the library and include this library into microservice by system depenency
           <artifactId>lib</artifactId>
           <version>0.0.1-SNAPSHOT</version>
           <scope>system</scope>
-          <systemPath>${basedir}/../lib/target/lib-0.0.1-SNAPSHOT.jar</systemPath>
+          <systemPath>${basedir}/../lib/target/lei-lib.jar</systemPath>
         </dependency>
 ```
 
 
 
-The spring beans of componenets (currently cors) should initialize automaticaly.
+The spring beans of componenets (initially cors, loggin, etc..) should initialize automaticaly.
 

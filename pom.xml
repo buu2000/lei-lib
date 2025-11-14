@@ -6,8 +6,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.nasdaq</groupId>
-    <artifactId>lib</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>lei-lib</artifactId>
+    <version>git</version>
     <packaging>jar</packaging>
     <name>lib</name>
     <description>Shared libs</description>
@@ -497,6 +497,7 @@
     </dependencies>
 
     <build>
+         <finalName>${artifactId}</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
