@@ -37,12 +37,18 @@ compile:
 
 sonar:
   stage: build
+  needs:
+  - job:  compile
+    artifacts: true
   script:
     - mvn -ntp org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.organization=Sets -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME
   allow_failure: true
 
 sbom:
   stage: build
+  needs:
+  - job:  compile
+    artifacts: true
   script:
     - mvn -ntp org.cyclonedx:cyclonedx-maven-plugin:2.9.1:makeAggregateBom -Dmaven.repo.local=$MAVEN_REPO_LOCAL
   artifacts:
@@ -51,6 +57,9 @@ sbom:
 
 test:
   stage: test
+  needs:
+  - job:  compile
+    artifacts: true
   script:
     - mvn -ntp verify -P-webapp -Dmaven.repo.local=$MAVEN_USER_HOME -e
   artifacts:
@@ -66,6 +75,9 @@ test:
 
 package:
   stage: publish
+  needs:
+  - job:  compile
+    artifacts: true
   script:
     - mvn -ntp verify -Pprod -DskipTests -Dmaven.repo.local=$MAVEN_USER_HOME
   artifacts:
@@ -73,5 +85,3 @@ package:
       - target/*.jar
       - target/classes
     expire_in: 1 day
-
- 
