@@ -43,10 +43,11 @@ public class LeiCorsConfiguration  {
   
   @Bean
   public CorsFilter corsFilter() {
-    log.info("CORS ORIGINS: "+environment.getProperty("cors.allowed.origins"));
+    log.info("CORS ORIGINS PATTERNS: "+environment.getProperty("cors.allowed.origins"));
     String[] origins=environment.getProperty("cors.allowed.origins").split(",");
     CorsConfiguration corsConfiguration=new CorsConfiguration();
-    corsConfiguration.setAllowedOrigins(Arrays.asList(origins));
+    // corsConfiguration.setAllowedOrigins(Arrays.asList(origins));
+    corsConfiguration.setAllowedOriginPatterns(Arrays.asList(origins));
     corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
     corsConfiguration.setAllowedHeaders(List.of("*"));
     corsConfiguration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
