@@ -9,9 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,11 +25,15 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
 @WebAppConfiguration
-
+@AutoConfigureMockMvc
 public class CorsTest
 {
   
-
+  @MockBean
+  private OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
+  
+  @MockBean
+  private ClientRegistrationRepository clientRegistrationRepository;
   
   @Autowired
   private ConfigurableApplicationContext configurableApplicationContext;

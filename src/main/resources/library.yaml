@@ -1,3 +1,33 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+spring:
+ application:
+   name: ${APP_NAME:lei-lib}
+ security:
+   oauth2:
+    client:
+       registration:
+          lei:
+            client-id: ${OKTA_BACKEND_CLIENT_ID:backend}
+            client-secret: ${OKTA_BACKEND_CLIENT_SECRET:}
+            provider: lei
+            authorization-grant-type: client_credentials
+            scope: 
+              - roles
+       provider:
+          lei:
+            issuer-uri: ${OKTA_ISSUER_URI:https://operator-login.dev.lei.sets.lv/oauth2/default}
+    resourceserver:
+      jwt:
+        issuer-uri: ${OKTA_ISSUER_URI:https://operator-login.dev.lei.sets.lv/oauth2/default}
+        jwk-set-uri: ${OKTA_JWKS_URI:https://operator-login.dev.lei.sets.lv/oauth2/default/v1/keys}
+        client-issuer-uri: ${KEYCLOAK_ISSUER_URI:https://keycloak.dev.lei.sets.lv/realms/lei}
+        client-jwk-set-uri: ${KEYCLOAK_JWKS_URI:https://keycloak.dev.lei.sets.lv/realms/lei/protocol/openid-connect/certs} 
+
 management:
   endpoints:
     web:
