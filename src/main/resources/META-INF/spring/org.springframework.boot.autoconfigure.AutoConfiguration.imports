@@ -6,4 +6,5 @@ com.nasdaq.security.ClaimsHelper
 com.nasdaq.security.jwt.TokenProvider
 com.nasdaq.security.jwt.JwtAuthConverter
 com.nasdaq.security.SystemTokenProvider
+com.nasdaq.config.OAuth2HttpSecurityConfig
 
