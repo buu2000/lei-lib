@@ -2,6 +2,7 @@ package com.nasdaq;
 
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,22 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import net.datafaker.Faker;
 
 @Configuration
+@EnableAutoConfiguration
 public class Security {
   
-  /*
-  @Bean
-  public SecurityFilterChain configure(HttpSecurity http)  throws Exception
-  {
-      http
-        .authorizeHttpRequests(authManager -> {
-          authManager.requestMatchers("/api/v1/joke")
-            .permitAll()
-            .anyRequest()
-            .authenticated();
-        });
-      return http.build();
-  }
-*/
+
   
   
   @Bean
