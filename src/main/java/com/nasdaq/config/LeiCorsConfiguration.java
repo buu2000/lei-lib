@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import  org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +44,13 @@ public class LeiCorsConfiguration  {
   
   @Bean
   public CorsFilter corsFilter() {
+    return new CorsFilter(corsConfigurationSource());
+  }
+
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource()
+  {
     log.info("CORS ORIGINS PATTERNS: "+environment.getProperty("cors.allowed.origins"));
     String[] origins=environment.getProperty("cors.allowed.origins").split(",");
     CorsConfiguration corsConfiguration=new CorsConfiguration();
@@ -55,9 +63,7 @@ public class LeiCorsConfiguration  {
     corsConfiguration.setMaxAge(-1L);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
-    return new CorsFilter(source);
+    return source;
   }
-
-
   
 }

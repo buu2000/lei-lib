@@ -42,6 +42,7 @@ public class SecurityConfiguration  {
   public SecurityFilterChain managment(HttpSecurity http)  throws Exception
   {
     return http
+        .cors(Customizer.withDefaults())
         .securityMatchers(matchers -> matchers
             .requestMatchers("/management/**"))
             .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
