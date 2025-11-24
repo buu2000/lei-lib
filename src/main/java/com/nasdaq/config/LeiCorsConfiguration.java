@@ -51,6 +51,7 @@ public class LeiCorsConfiguration  {
     corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
     corsConfiguration.setAllowedHeaders(List.of("*"));
     corsConfiguration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+    corsConfiguration.setAllowCredentials(true);
     corsConfiguration.setMaxAge(-1L);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);

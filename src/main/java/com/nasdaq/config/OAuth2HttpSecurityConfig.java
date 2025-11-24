@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -87,8 +88,10 @@ public class OAuth2HttpSecurityConfig
               if (bean instanceof HttpSecurity && HTTP_SECURITY_DEFAULT_BEAN_NAME.equals(beanName)) {
                   HttpSecurity http = (HttpSecurity) bean;
                   try {
-                    http.oauth2ResourceServer(oauth2 -> oauth2.authenticationManagerResolver(jwtIssuerAuthenticationManagerResolver()))
-                    .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).csrf(CsrfConfigurer::disable);
+                    http.cors(Customizer.withDefaults())
+                    .oauth2ResourceServer(oauth2 -> oauth2.authenticationManagerResolver(jwtIssuerAuthenticationManagerResolver()))
+                    .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .csrf(CsrfConfigurer::disable);
 
                   } catch (Exception e) {
                       log.error(e.getMessage(),e);
