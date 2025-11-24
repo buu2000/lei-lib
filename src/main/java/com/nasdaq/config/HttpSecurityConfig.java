@@ -1,5 +1,7 @@
 package com.nasdaq.config;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,6 +21,7 @@ import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.nasdaq.security.jwt.JwtAuthConverter;
 
@@ -29,21 +32,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableWebSecurity
-public class OAuth2HttpSecurityConfig 
+public class HttpSecurityConfig 
 {
 
 
   
   @Autowired
+  private final LeiCorsConfiguration leiCorsConfiguration;
+  
+  @Autowired
   private final JwtAuthConverter jwtAuthConverter;
 
-  
   
   @Autowired
   public @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}") String issuerUri;
 
   @Autowired
-    public @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") String jwkSetUri;
+   public @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") String jwkSetUri;
 
   @Autowired
   
@@ -83,6 +88,7 @@ public class OAuth2HttpSecurityConfig
   public BeanPostProcessor httpSecurityBeanPostProcessor() {
       return new BeanPostProcessor() {
 
+          @SuppressWarnings("unused")
           @Override
           public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
               if (bean instanceof HttpSecurity && HTTP_SECURITY_DEFAULT_BEAN_NAME.equals(beanName)) {
